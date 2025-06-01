@@ -82,7 +82,6 @@ const GraphSearch = () => {
       )}
 
       <div>
-        <label htmlFor="bfsradio">BFS</label>
         <input
           type="radio"
           name="search"
@@ -93,7 +92,8 @@ const GraphSearch = () => {
             setSearchParams((prev) => ({ ...prev, search: "bfs" }))
           }}
         />
-        <label htmlFor="dfsradio">DFS</label>
+        <label htmlFor="bfsradio">BFS</label>
+
         <input
           type="radio"
           name="search"
@@ -104,6 +104,64 @@ const GraphSearch = () => {
             setSearchParams((prev) => ({ ...prev, search: "dfs" }))
           }}
         />
+        <label htmlFor="dfsradio">DFS</label>
+      </div>
+      <div>
+        {searchParams.search === "bfs" ? (
+          <div>
+            <span style={{ color: "blue" }}>
+              <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+                <rect width="10" height="10" x="10" y="10" fill="blue" />
+              </svg>
+              <span> Source</span>
+            </span>
+            <span style={{ color: "red" }}>
+              <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+                <rect width="10" height="10" x="10" y="10" fill="red" />
+              </svg>
+              <span> Visited</span>
+            </span>
+            <span style={{ color: "green" }}>
+              <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+                <rect width="10" height="10" x="10" y="10" fill="green" />
+              </svg>
+              <span> Destination</span>
+            </span>
+          </div>
+        ) : (
+            <div>
+            <span style={{ color: "blue" }}>
+              <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+                <rect width="10" height="10" x="10" y="10" fill="blue" />
+              </svg>
+              <span> Source</span>
+            </span>
+            <span style={{ color: "red" }}>
+              <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+                <rect width="10" height="10" x="10" y="10" fill="red" />
+              </svg>
+              <span> Visited</span>
+            </span>
+            <span style={{ color: "green" }}>
+              <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+                <rect width="10" height="10" x="10" y="10" fill="green" />
+              </svg>
+              <span> Destination</span>
+            </span>
+            <span style={{ color: "orange" }}>
+              <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+                <rect width="10" height="10" x="10" y="10" fill="orange" />
+              </svg>
+              <span> Next Visit</span>
+            </span>
+            <span style={{ color: "violet" }}>
+              <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+                <rect width="10" height="10" x="10" y="10" fill="violet" />
+              </svg>
+              <span> Backtracking/Already Seen</span>
+            </span>
+          </div>
+        )}
       </div>
       <GraphGrid />
     </div>
@@ -166,7 +224,7 @@ async function bfs(source: number, destination: number) {
 
   while (visit.length > 0) {
     await new Promise((resolve) => setTimeout(resolve, 500))
-    let visitCount:number = visit.length
+    let visitCount: number = visit.length
     for (let i = 0; i < visitCount; i++) {
       const current = visit.shift()
       let curI = Math.floor(current! / 10)
@@ -208,7 +266,7 @@ async function dfs(source: number, destination: number) {
   paintN(source, "blue")
 
   while (visit.length > 0) {
-    await new Promise((resolve) => setTimeout(resolve, 100))
+    await new Promise((resolve) => setTimeout(resolve, 30))
     const current = visit.shift()
     if (current === undefined) continue
     if (current === destination) {
@@ -239,7 +297,7 @@ async function dfs(source: number, destination: number) {
       let newN = newI * 10 + newJ
       if (newN !== source) {
         visit.unshift(newN)
-        paintN(newN, "yellow")
+        paintN(newN, "orange")
       }
     }
   }
