@@ -20,7 +20,7 @@ const GraphSearch = () => {
     const { name, value } = e.target
     setSearchParams((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: Number(value),
     }))
   }
 
@@ -34,6 +34,7 @@ const GraphSearch = () => {
       destination >= 0 &&
       destination < 100
     ) {
+      bfs(source, destination)
       console.log(`${source} - ${destination}`)
     } else {
       console.error("Invalid source or destination")
@@ -135,5 +136,57 @@ const GraphGrid = () => {
     </div>
   )
 }
+
+function paintN(n: number, c: string = "red") {
+  const grid = document.getElementById("grid" + String(n))
+  if (grid) {
+    grid.style.backgroundColor = c
+  }
+}
+
+async function bfs(source: number, destination: number) {
+  const dir = [
+    { i: -1, j: 0 }, // Up
+    { i: 1, j: 0 }, // Down
+    { i: 0, j: -1 }, // Left
+    { i: 0, j: 1 }, // Right
+  ]
+
+  const visit: number[] = [source]
+  const seen = new Set<number>([]) 
+  paintN(source, "blue")
+
+  while (visit.length > 0) {
+    await new Promise((resolve) => setTimeout(resolve, 500))
+    let visitCount:number = visit.length
+    for (let i = 0; i < visitCount; i++) {
+      const current = visit.shift()
+      let curI = Math.floor(current! / 10)
+      let curJ = current! % 10
+      for (let d of dir) {
+        let newI = curI + d.i
+        let newJ = curJ + d.j
+        if (newI < 0 || newI >= 10 || newJ < 0 || newJ >= 10) continue
+
+        let newN = newI * 10 + newJ
+        if (seen.has(newN)) continue
+
+        seen.add(newN) 
+        if (newN != source && newN != destination) {
+          paintN(newN, "red")
+        }
+
+        if (newN === destination) {
+          console.log(`Found destination ${destination} from ${source}`)
+          paintN(newN, "green")
+          return
+        }
+        visit.push(newN)
+      }
+    }
+  }
+}
+
+
 
 export default GraphSearch
