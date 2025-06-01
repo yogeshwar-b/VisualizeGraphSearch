@@ -13,7 +13,7 @@ const GraphSearch = () => {
   ] = useState<SearchParams>({
     source: 44,
     destination: 8,
-    search: "dfs",
+    search: "bfs",
   })
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,36 +50,36 @@ const GraphSearch = () => {
   }
 
   return (
-    <div style={{ width: "100%", height: "100%" }}>
-      <label htmlFor="source">Source </label>
-      <input
-        type="text"
-        id="source"
-        name="source"
-        value={searchParams.source}
-        onChange={handleInputChange}
-      />
-
-      <label htmlFor="destination">Destination </label>
-      <input
-        type="text"
-        id="destination"
-        name="destination"
-        value={searchParams.destination}
-        onChange={handleInputChange}
-      />
-
-      <button onClick={handleSearch}>Search</button>
-      {searchParams.source &&
-      searchParams.destination &&
-      searchParams.source >= 0 &&
-      searchParams.source < 100 &&
-      searchParams.destination >= 0 &&
-      searchParams.destination < 100 ? (
-        <></>
-      ) : (
-        <div style={{ color: "red" }}>Invalid Input</div>
-      )}
+    <div style={{ width: "100%", height: "100%" ,placeContent:'center',placeItems:'center'}}>
+      <div>
+          <label htmlFor="source">Source </label>
+          <input
+            type="text"
+            id="source"
+            name="source"
+            value={searchParams.source}
+            onChange={handleInputChange}
+          />
+          <label htmlFor="destination">Destination </label>
+          <input
+            type="text"
+            id="destination"
+            name="destination"
+            value={searchParams.destination}
+            onChange={handleInputChange}
+          />
+          <button onClick={handleSearch}>Search</button>
+          {searchParams.source &&
+          searchParams.destination &&
+          searchParams.source >= 0 &&
+          searchParams.source < 100 &&
+          searchParams.destination >= 0 &&
+          searchParams.destination < 100 ? (
+            <></>
+          ) : (
+            <div style={{ color: "red" }}>Invalid Input</div>
+          )}
+      </div>
 
       <div>
         <input
@@ -196,7 +196,7 @@ const GraphGrid = () => {
     ))
   }
   return (
-    <div style={{ width: "100%", height: "100%" }}>
+    <div style={{ width: "100%", height: "100%",placeContent:'center',placeItems:'center' }}>
       <div>my grid</div>
       <div>{GraphRows(10)}</div>
     </div>
