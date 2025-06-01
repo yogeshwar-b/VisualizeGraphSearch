@@ -1,4 +1,5 @@
 import mazeicon from "/maze.svg"
+import GraphSearch from "./GraphSearch";
 
 function App() {
 
@@ -9,8 +10,9 @@ function App() {
           <img src={mazeicon} width={50} height={50} alt="Maze Icon" />
           <h3>Visualize Graph Search</h3>
         </div>
-
       </div>
+      <GraphSearch/>
+
     </>
   )
 }
