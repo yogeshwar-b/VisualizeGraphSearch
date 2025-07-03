@@ -8,8 +8,8 @@ interface SearchParams {
 
 const GraphSearch = () => {
   useEffect(() => {
-    handleSearch();
-  }, []);
+    // handleSearch();
+  }, [])
 
   const [searchParams, setSearchParams]: [
     SearchParams,
@@ -31,8 +31,10 @@ const GraphSearch = () => {
   const handleSearch = () => {
     const { source, destination, search } = searchParams
     if (
-      source &&
-      destination &&
+      source !== null &&
+      source !== undefined &&
+      destination !== null &&
+      destination !== undefined &&
       source >= 0 &&
       source < 100 &&
       destination >= 0 &&
@@ -44,7 +46,8 @@ const GraphSearch = () => {
       if (search === 'bfs') {
         bfs(source, destination)
       } else if (search === 'dfs') {
-        dfs(source, destination)
+        // dfs(source, destination)
+        recursiveDfs(source, destination)
       }
       console.log(`${source} - ${destination}`)
     } else {
@@ -309,7 +312,9 @@ async function dfs(source: number, destination: number) {
     }
     // paintN(current, "black")
     if (seen.has(current)) {
-      paintN(current, 'violet')
+      paintN(current, 'yellow')
+      await new Promise((resolve) => setTimeout(resolve, 100))
+      paintN(current, 'red')
       continue
     }
 
@@ -330,10 +335,57 @@ async function dfs(source: number, destination: number) {
       let newN = newI * 10 + newJ
       if (newN !== source) {
         visit.unshift(newN)
-        paintN(newN, 'orange')
+        // paintN(newN, 'orange')
       }
     }
   }
+}
+
+var DestinationFound = false
+var seenSet = new Set<number>()
+const dir = [
+  { i: -1, j: 0 }, 
+  { i: 1, j: 0 },
+  { i: 0, j: -1 }, 
+  { i: 0, j: 1 }
+]
+var seenDelay = 100
+var paintDelay = 100
+async function recursiveDfs(curr: number, destination: number) {
+  if (curr === destination) {
+    console.log(`Found destination ${destination} from ${curr}`)
+    DestinationFound = true
+    paintN(destination, 'green')
+    return
+  }
+  if (seenSet.has(curr)) {
+    paintN(curr, 'violet')
+    await new Promise((resolve) => setTimeout(resolve, seenDelay))
+    paintN(curr, 'red')
+    return
+  }
+  seenSet.add(curr)
+  paintN(curr, 'red')
+  // console.log(`Visiting ${curr}`)
+  await new Promise((resolve) => setTimeout(resolve, paintDelay))
+  const curI = Math.floor(curr / 10)
+  const curJ = curr % 10
+
+  for (const d of dir) {
+    const newI = curI + d.i
+    const newJ = curJ + d.j
+    if (newI < 0 || newI >= 10 || newJ < 0 || newJ >= 10) continue
+
+    const newN = newI * 10 + newJ
+    if (!seenSet.has(newN) && !DestinationFound) {
+      await recursiveDfs(newN, destination)
+      if (DestinationFound) {
+        return
+      }
+    }
+  }
+  await new Promise((resolve) => setTimeout(resolve, paintDelay))
+  paintN(curr, 'orange')
 }
 
 export default GraphSearch
