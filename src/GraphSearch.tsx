@@ -8,7 +8,7 @@ interface SearchParams {
 
 const GraphSearch = () => {
   useEffect(() => {
-    // handleSearch();
+    handleSearch();
   }, [])
 
   const [searchParams, setSearchParams]: [
@@ -46,8 +46,7 @@ const GraphSearch = () => {
       if (search === 'bfs') {
         bfs(source, destination)
       } else if (search === 'dfs') {
-        // dfs(source, destination)
-        recursiveDfs(source, destination)
+        handleDFS(source, destination)
       }
       console.log(`${source} - ${destination}`)
     } else {
@@ -176,14 +175,9 @@ const GraphSearch = () => {
               <svg width='20' height='20' xmlns='http://www.w3.org/2000/svg'>
                 <rect width='10' height='10' x='10' y='10' fill='orange' />
               </svg>
-              <span> Next Visit</span>
+              <span> Backtracking/Seen</span>
             </span>
-            <span style={{ color: 'violet' }}>
-              <svg width='20' height='20' xmlns='http://www.w3.org/2000/svg'>
-                <rect width='10' height='10' x='10' y='10' fill='violet' />
-              </svg>
-              <span> Backtracking/Already Seen</span>
-            </span>
+            
           </div>
         )}
       </div>
@@ -289,68 +283,23 @@ async function bfs(source: number, destination: number) {
   }
 }
 
-async function dfs(source: number, destination: number) {
-  const dir = [
-    { i: -1, j: 0 }, // Up
-    { i: 1, j: 0 }, // Down
-    { i: 0, j: -1 }, // Left
-    { i: 0, j: 1 } // Right
-  ]
-
-  const visit: number[] = [source]
-  const seen = new Set<number>([])
-  paintN(source, 'blue')
-
-  while (visit.length > 0) {
-    await new Promise((resolve) => setTimeout(resolve, 30))
-    const current = visit.shift()
-    if (current === undefined) continue
-    if (current === destination) {
-      console.log(`Found destination ${destination} from ${source}`)
-      paintN(current, 'green')
-      return
-    }
-    // paintN(current, "black")
-    if (seen.has(current)) {
-      paintN(current, 'yellow')
-      await new Promise((resolve) => setTimeout(resolve, 100))
-      paintN(current, 'red')
-      continue
-    }
-
-    seen.add(current)
-    if (current != source) {
-      paintN(current, 'red')
-    } else {
-      paintN(current, 'blue')
-    }
-
-    let curI = Math.floor(current / 10)
-    let curJ = current % 10
-    for (let d of dir) {
-      let newI = curI + d.i
-      let newJ = curJ + d.j
-      if (newI < 0 || newI >= 10 || newJ < 0 || newJ >= 10) continue
-
-      let newN = newI * 10 + newJ
-      if (newN !== source) {
-        visit.unshift(newN)
-        // paintN(newN, 'orange')
-      }
-    }
-  }
-}
-
 var DestinationFound = false
 var seenSet = new Set<number>()
 const dir = [
-  { i: -1, j: 0 }, 
+  { i: -1, j: 0 },
   { i: 1, j: 0 },
-  { i: 0, j: -1 }, 
+  { i: 0, j: -1 },
   { i: 0, j: 1 }
 ]
 var seenDelay = 100
 var paintDelay = 100
+var sourceNode = -1
+function handleDFS(source: number, destination: number) {
+  DestinationFound = false
+  sourceNode = source
+  seenSet.clear()
+  recursiveDfs(source, destination)
+}
 async function recursiveDfs(curr: number, destination: number) {
   if (curr === destination) {
     console.log(`Found destination ${destination} from ${curr}`)
@@ -364,8 +313,13 @@ async function recursiveDfs(curr: number, destination: number) {
     paintN(curr, 'red')
     return
   }
+  if (curr == sourceNode) {
+    paintN(curr, 'blue')
+  } else {
+    paintN(curr, 'red')
+  }
   seenSet.add(curr)
-  paintN(curr, 'red')
+
   // console.log(`Visiting ${curr}`)
   await new Promise((resolve) => setTimeout(resolve, paintDelay))
   const curI = Math.floor(curr / 10)
