@@ -8,8 +8,8 @@ interface SearchParams {
 
 const GraphSearch = () => {
   useEffect(() => {
-    handleSearch()
-  })
+    handleSearch();
+  }, []);
 
   const [searchParams, setSearchParams]: [
     SearchParams,
