@@ -7,9 +7,9 @@ interface SearchParams {
 }
 
 const GraphSearch = () => {
-useEffect(() => {
-  handleSearch()
-})
+  useEffect(() => {
+    handleSearch()
+  })
 
   const [searchParams, setSearchParams]: [
     SearchParams,
@@ -55,22 +55,34 @@ useEffect(() => {
   return (
     <div style={{ width: '100%', height: '100%', placeItems: 'center' }}>
       <div>
-        <label htmlFor='source'>Source </label>
-        <input
-          type='text'
-          id='source'
-          name='source'
-          value={searchParams.source}
-          onChange={handleInputChange}
-        />
-        <label htmlFor='destination'>Destination </label>
-        <input
-          type='text'
-          id='destination'
-          name='destination'
-          value={searchParams.destination}
-          onChange={handleInputChange}
-        />
+        <label htmlFor='source'>
+          Source{' '}
+          <input
+            type='text'
+            id='source'
+            name='source'
+            value={searchParams.source}
+            onChange={handleInputChange}
+            style={{
+              width: '2em',
+              textAlign: 'center',
+              marginRight: '10px'
+            }}
+          />
+        </label>
+
+        <label htmlFor='destination'>
+          Destination{' '}
+          <input
+            type='text'
+            id='destination'
+            name='destination'
+            value={searchParams.destination}
+            onChange={handleInputChange}
+            style={{ width: '2em', textAlign: 'center', marginRight: '10px' }}
+          />
+        </label>
+
         <button onClick={handleSearch}>Search</button>
         {searchParams.source &&
         searchParams.destination &&
@@ -185,12 +197,12 @@ const GraphGrid = () => {
         id={`grid${startnumber + index}`}
         style={{
           width: '9%',
-          maxWidth: '50px',
+          maxWidth: '40px',
           aspectRatio: '1/1',
           border: '2px solid black',
           boxShadow: '0 0 5px rgba(0,0,0,0.2)',
-          margin: '.5%',
           borderRadius: '5px',
+          margin: '1px',
           display: 'inline-block',
           textAlign: 'center',
           placeContent: 'center',
