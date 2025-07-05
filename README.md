@@ -5,7 +5,7 @@ To Animate and Simulate Breadth First Search and Depth First Search in the brows
 ### Try at 👆 https://yogeshwar-b.github.io/VisualizeGraphSearch/
 
 
-![Image](./SimulationGif/dfsvbfs.gif)
+![Image](./SimulationGif/bfsdfs2.gif)
 
 
 
